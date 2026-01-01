@@ -25,7 +25,7 @@ export default function POSPage() {
       ],
       totalAmount: 150000,
       status: 'pending',
-      createdAt: '2026-01-01 10:30:00',
+      createdAt: new Date(Date.now() - 5 * 60000).toLocaleString('vi-VN'),
       customerName: 'Nguyễn Văn A',
     },
     {
@@ -37,7 +37,7 @@ export default function POSPage() {
       ],
       totalAmount: 95000,
       status: 'preparing',
-      createdAt: '2026-01-01 10:35:00',
+      createdAt: new Date(Date.now() - 10 * 60000).toLocaleString('vi-VN'),
     },
   ]);
 
