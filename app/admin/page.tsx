@@ -11,8 +11,10 @@ export default function AdminPage() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
   const [selectedTable, setSelectedTable] = useState(1);
+  const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
   const [newItem, setNewItem] = useState({
     name: '',
     nameEn: '',
@@ -59,6 +61,24 @@ export default function AdminPage() {
     const item = menuItems.find(i => i.id === itemId);
     if (item) {
       await updateMenuItem(itemId, { available: !item.available });
+    }
+  };
+
+  const handleEditItem = (item: MenuItem) => {
+    setEditingItem(item);
+    setShowEditModal(true);
+  };
+
+  const handleUpdateItem = async () => {
+    if (editingItem) {
+      const { id, ...updateData } = editingItem;
+      const result = await updateMenuItem(id, updateData);
+      if (result) {
+        setShowEditModal(false);
+        setEditingItem(null);
+      } else {
+        alert('Không thể cập nhật món. Vui lòng thử lại!');
+      }
     }
   };
 
@@ -178,6 +198,7 @@ export default function AdminPage() {
                     <td className="px-4 py-4">
                       <div className="flex gap-2">
                         <button
+                          onClick={() => handleEditItem(item)}
                           className="text-blue-600 hover:text-blue-800 p-2 hover:bg-blue-50 rounded"
                           title="Chỉnh sửa"
                         >
@@ -329,6 +350,113 @@ export default function AdminPage() {
                 className="flex-1 bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
               >
                 Thêm Món
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Item Modal */}
+      {showEditModal && editingItem && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b">
+              <h2 className="text-2xl font-bold text-gray-800">Chỉnh Sửa Món</h2>
+            </div>
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Tên Món (Tiếng Việt)
+                </label>
+                <input
+                  type="text"
+                  value={editingItem.name}
+                  onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="Phở Bò Tái"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Tên Món (Tiếng Anh)
+                </label>
+                <input
+                  type="text"
+                  value={editingItem.nameEn}
+                  onChange={(e) => setEditingItem({ ...editingItem, nameEn: e.target.value })}
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="Rare Beef Pho"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Mô Tả
+                </label>
+                <textarea
+                  value={editingItem.description}
+                  onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  rows={3}
+                  placeholder="Mô tả món ăn..."
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Giá (VNĐ)
+                  </label>
+                  <input
+                    type="number"
+                    value={editingItem.price}
+                    onChange={(e) => setEditingItem({ ...editingItem, price: parseInt(e.target.value) })}
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="65000"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Danh Mục
+                  </label>
+                  <select
+                    value={editingItem.category}
+                    onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  >
+                    <option>Phở</option>
+                    <option>Bún</option>
+                    <option>Khai Vị</option>
+                    <option>Đồ Uống</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Hình Ảnh URL
+                </label>
+                <input
+                  type="text"
+                  value={editingItem.imageUrl || ''}
+                  onChange={(e) => setEditingItem({ ...editingItem, imageUrl: e.target.value })}
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="https://..."
+                />
+              </div>
+            </div>
+            <div className="p-6 border-t flex gap-3">
+              <button
+                onClick={() => {
+                  setShowEditModal(false);
+                  setEditingItem(null);
+                }}
+                className="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={handleUpdateItem}
+                className="flex-1 bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+              >
+                Cập Nhật
               </button>
             </div>
           </div>
