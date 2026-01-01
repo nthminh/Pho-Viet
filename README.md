@@ -85,47 +85,49 @@ npm start
 
 ## 🌐 Deploy Lên Web (Đưa App Ra Public)
 
-Bạn muốn đưa app lên web để mọi người có thể truy cập và test thử? Có nhiều cách deploy miễn phí!
+### 🎯 QUAN TRỌNG: App Giờ Chạy Được Ngay Mà Không Cần Firebase!
 
-### 🚀 Deploy Nhanh Nhất - Vercel (5 phút) ⚡
+**TL;DR:** Deploy ngay trong 5 phút, không cần setup gì! 
+
+👉 **Xem hướng dẫn đầy đủ:** [SIMPLE_DEPLOY.md](./SIMPLE_DEPLOY.md)
+
+### ⚡ 2 Cách Deploy
+
+#### Cách 1: Không Cần Firebase (5 phút) ⭐ Khuyến Nghị Để Test
+- ✅ Không cần setup gì
+- ✅ Deploy ngay lập tức
+- ✅ Miễn phí 100%
+- ⚠️ Dữ liệu lưu trong bộ nhớ (mất khi refresh)
+
+#### Cách 2: Với Firebase (15 phút) ⭐ Khuyến Nghị Cho Production
+- ✅ Dữ liệu lưu vĩnh viễn trên cloud
+- ✅ Đồng bộ giữa các thiết bị
+- ✅ Real-time updates
+- ✅ Vẫn miễn phí (Firebase free tier)
+
+### 🚀 Deploy Nhanh Nhất - Vercel (Không Cần Firebase)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/nthminh/Pho-Viet)
 
-**Các bước đơn giản:**
+**Các bước:**
 1. Click nút **"Deploy with Vercel"** ở trên
 2. Login vào Vercel bằng GitHub (miễn phí)
-3. Thêm **6 Environment Variables** từ Firebase (xem bên dưới)
-4. Click **Deploy**
-5. Nhận URL public dạng: `https://pho-viet-xxxxx.vercel.app` 🎉
+3. Click **Deploy** (không cần thêm environment variables)
+4. Nhận URL public dạng: `https://pho-viet-xxxxx.vercel.app` 🎉
 
-#### Lấy Firebase Environment Variables:
-1. Truy cập [Firebase Console](https://console.firebase.google.com)
-2. Chọn project → ⚙️ Settings → General
-3. Scroll xuống "Your apps" → Chọn Web app
-4. Copy 6 giá trị này vào Vercel:
-   ```
-   NEXT_PUBLIC_FIREBASE_API_KEY=...
-   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
-   NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
-   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
-   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
-   NEXT_PUBLIC_FIREBASE_APP_ID=...
-   ```
+**Nếu muốn dùng Firebase (lưu dữ liệu vĩnh viễn):**
+- Xem hướng dẫn chi tiết trong [SIMPLE_DEPLOY.md](./SIMPLE_DEPLOY.md)
+- Thêm 6 Environment Variables từ Firebase
+- Redeploy
 
-### 📚 Các Phương Án Deploy Khác
+### 📚 Tài Liệu Deploy
 
-| Platform | Độ Khó | Giá | Tốc Độ | Link Hướng Dẫn |
-|----------|--------|-----|--------|----------------|
-| **Vercel** ⭐ | Dễ nhất | Miễn phí | Rất nhanh | [Chi tiết](./DEPLOYMENT.md#1-deploy-lên-vercel-khuyến-nghị) |
-| **Netlify** | Dễ | Miễn phí | Nhanh | [Chi tiết](./DEPLOYMENT.md#2-deploy-lên-netlify) |
-| **Firebase Hosting** | Trung bình | Miễn phí* | Nhanh | [Chi tiết](./DEPLOYMENT.md#3-deploy-lên-firebase-hosting) |
-| **VPS/Server** | Khó | $5+/tháng | Tùy VPS | [Chi tiết](./DEPLOYMENT.md#4-deploy-trên-vpsserver-tự-quản) |
-
-### 📖 Tài Liệu Deploy Đầy Đủ
-
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Hướng dẫn chi tiết từng bước cho tất cả platforms
-- **[DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md)** - Checklist để đảm bảo deploy thành công
-- **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - Giải quyết các lỗi thường gặp
+| Tài Liệu | Mô Tả |
+|----------|-------|
+| **[SIMPLE_DEPLOY.md](./SIMPLE_DEPLOY.md)** ⭐ | Hướng dẫn đơn giản, dễ hiểu (KHUYẾN NGHỊ) |
+| [DEPLOYMENT.md](./DEPLOYMENT.md) | Hướng dẫn chi tiết, đầy đủ |
+| [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) | Setup Firebase cụ thể |
+| [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) | Giải quyết các lỗi |
 
 ### ⚡ Quick Links cho Testing
 
