@@ -1,54 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Clock, CheckCircle, XCircle, Printer } from 'lucide-react';
-
-interface Order {
-  id: string;
-  tableNumber: number;
-  items: Array<{ name: string; quantity: number; price: number }>;
-  totalAmount: number;
-  status: string;
-  createdAt: string;
-  customerName?: string;
-}
+import { subscribeToOrders, updateOrderStatus as updateOrderStatusInDb } from '@/lib/firebase-orders';
+import { Order } from '@/lib/types';
 
 export default function POSPage() {
-  const [orders, setOrders] = useState<Order[]>([
-    {
-      id: 'DH001',
-      tableNumber: 1,
-      items: [
-        { name: 'Phở Bò Tái', quantity: 2, price: 65000 },
-        { name: 'Trà Đá', quantity: 2, price: 10000 },
-      ],
-      totalAmount: 150000,
-      status: 'pending',
-      createdAt: new Date(Date.now() - 5 * 60000).toLocaleString('vi-VN'),
-      customerName: 'Nguyễn Văn A',
-    },
-    {
-      id: 'DH002',
-      tableNumber: 3,
-      items: [
-        { name: 'Phở Gà', quantity: 1, price: 55000 },
-        { name: 'Gỏi Cuốn', quantity: 1, price: 40000 },
-      ],
-      totalAmount: 95000,
-      status: 'preparing',
-      createdAt: new Date(Date.now() - 10 * 60000).toLocaleString('vi-VN'),
-    },
-  ]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Subscribe to orders on mount
+  useEffect(() => {
+    const unsubscribe = subscribeToOrders((orders) => {
+      setOrders(orders);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const formatPrice = (price: number) => {
     return price.toLocaleString('vi-VN') + 'đ';
   };
 
-  const updateOrderStatus = (orderId: string, newStatus: string) => {
-    setOrders(orders.map(order =>
-      order.id === orderId ? { ...order, status: newStatus } : order
-    ));
+  const updateOrderStatus = async (orderId: string, newStatus: Order['status']) => {
+    await updateOrderStatusInDb(orderId, newStatus);
   };
 
   const getStatusColor = (status: string) => {
@@ -75,6 +52,10 @@ export default function POSPage() {
     window.print();
   };
 
+  const formatDateTime = (date: Date) => {
+    return date.toLocaleString('vi-VN');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -94,7 +75,14 @@ export default function POSPage() {
 
       {/* Stats */}
       <div className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            <p className="mt-4 text-gray-600">Đang tải đơn hàng...</p>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-white rounded-lg shadow-md p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -162,12 +150,12 @@ export default function POSPage() {
                       {order.customerName && (
                         <p>Khách hàng: <span className="font-semibold">{order.customerName}</span></p>
                       )}
-                      <p>Thời gian: {order.createdAt}</p>
+                      <p>Thời gian: {formatDateTime(order.createdAt)}</p>
                     </div>
                     <div className="space-y-1">
                       {order.items.map((item, idx) => (
                         <p key={idx} className="text-sm text-gray-700">
-                          • {item.name} x{item.quantity} - {formatPrice(item.price * item.quantity)}
+                          • {item.menuItem.name} x{item.quantity} - {formatPrice(item.menuItem.price * item.quantity)}
                         </p>
                       ))}
                     </div>
@@ -213,6 +201,8 @@ export default function POSPage() {
             ))}
           </div>
         </div>
+          </>
+        )}
       </div>
     </div>
   );
