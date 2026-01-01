@@ -1,0 +1,62 @@
+[debug] [2026-01-01T12:01:31.047Z] ----------------------------------------------------------------------
+[debug] [2026-01-01T12:01:31.051Z] Command:       /nix/store/ixbb20farqh1f4fqbmsn6b1ixn8mc8ij-nodejs-20.18.1/bin/node /home/user/.global_modules/bin/firebase init hosting
+[debug] [2026-01-01T12:01:31.052Z] CLI Version:   15.1.0
+[debug] [2026-01-01T12:01:31.052Z] Platform:      linux
+[debug] [2026-01-01T12:01:31.052Z] Node Version:  v20.18.1
+[debug] [2026-01-01T12:01:31.052Z] Time:          Thu Jan 01 2026 12:01:31 GMT+0000 (Coordinated Universal Time)
+[debug] [2026-01-01T12:01:31.052Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-01-01T12:01:32.441Z] Checked if tokens are valid: true, expires at: 1767272064624
+[debug] [2026-01-01T12:01:32.441Z] Checked if tokens are valid: true, expires at: 1767272064624
+[debug] [2026-01-01T12:01:32.445Z] >>> [apiv2][query] GET https://monospace-pa.googleapis.com/v1/workspaces/pho-viet-25192726 [none]
+[debug] [2026-01-01T12:01:33.342Z] <<< [apiv2][status] GET https://monospace-pa.googleapis.com/v1/workspaces/pho-viet-25192726 200
+[debug] [2026-01-01T12:01:33.342Z] <<< [apiv2][body] GET https://monospace-pa.googleapis.com/v1/workspaces/pho-viet-25192726 {"workspaceId":"pho-viet-25192726","name":"Pho-Viet","workspaceRedirectUrl":"firebase-pho-viet-1767228788662.cluster-fdkw7vjj7bgguspe3fbbc25tra.cloudworkstations.dev","status":"WORKSPACE_STATUS_RUNNING","lastAccessDatetime":"2026-01-01T11:04:19.006543Z","workspaceTemplate":"WORKSPACE_TEMPLATE_BLANK_WEB","owner":"SELF","serviceAccountEmail":"msp-2805173462824233258@monospace-per-ws-sa-7.iam.gserviceaccount.com","gitRepoUrl":"https://github.com/nthminh/Pho-Viet","enableNix":true,"ownerEmail":"nthminh2804@gmail.com","workstationAccessToken":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Nsb3VkLmdvb2dsZS5jb20vd29ya3N0YXRpb25zIiwiYXVkIjoiZmlyZWJhc2UtcGhvLXZpZXQtMTc2NzIyODc4ODY2Mi5jbHVzdGVyLWZka3c3dmpqN2JnZ3VzcGUzZmJiYzI1dHJhLmNsb3Vkd29ya3N0YXRpb25zLmRldiIsImlhdCI6MTc2NzI2ODg5MywiZXhwIjoxNzY3MzU1MjkzfQ.Gj6HbKwgCQCWoCIFXmiSf0klZQzbu-OrZu4jeGtCgOLO3DGdyDzstlNvVnM_7S9rd2jqukLG1MuqNOnM2nggxGCVtLvnpNp2NG9YXXekBwjq0YeFRKHVny5JSXd5dci7zL2BQyj3mHcmrvuKFxqVCbfkGDJ_IADNfsoMwjz1B7NOVaHNhSy_krCV4wDSQGk5OOuGSSHw2VSxxQh2SOLV5uDAfl7noTNMB4HnwS0AIpMEungy3gz1fK_27jb5Zr8Nn9Pj66JKKYnRpMvRst9qBaL0xWIWVDUdFLJ_92VLdOvZibj6oMb7Z1QBmnLqDWHN63dBxlZWnoGmr4fPlwKL5g","firebaseProjectId":"pho-viet-30d0b"}
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /home/user/Pho-Viet
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] 
+[debug] [2026-01-01T12:01:33.351Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-01-01T12:01:33.351Z] > authorizing via signed-in user (nthminh2804@gmail.com)
+[debug] [2026-01-01T12:01:33.352Z] Checked if tokens are valid: true, expires at: 1767272064624
+[debug] [2026-01-01T12:01:33.352Z] Checked if tokens are valid: true, expires at: 1767272064624
+[debug] [2026-01-01T12:01:33.352Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/pho-viet-30d0b [none]
+[debug] [2026-01-01T12:01:33.611Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/pho-viet-30d0b 200
+[debug] [2026-01-01T12:01:33.611Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/pho-viet-30d0b {"projectId":"pho-viet-30d0b","projectNumber":"808782927494","displayName":"Pho-Viet","name":"projects/pho-viet-30d0b","resources":{"hostingSite":"pho-viet-30d0b"},"state":"ACTIVE","etag":"1_f3f27ca4-f133-4de3-8592-def0b72983f4"}
+[info] i  Using project pho-viet-30d0b (Pho-Viet) . 
+[info] 
+=== Hosting Setup
+[debug] [2026-01-01T12:01:33.639Z] Checked if tokens are valid: true, expires at: 1767272064624
+[debug] [2026-01-01T12:01:33.639Z] Checked if tokens are valid: true, expires at: 1767272064624
+[debug] [2026-01-01T12:01:33.639Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/pho-viet-30d0b [none]
+[debug] [2026-01-01T12:01:33.897Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/pho-viet-30d0b 200
+[debug] [2026-01-01T12:01:33.897Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/pho-viet-30d0b {"projectId":"pho-viet-30d0b","projectNumber":"808782927494","displayName":"Pho-Viet","name":"projects/pho-viet-30d0b","resources":{"hostingSite":"pho-viet-30d0b"},"state":"ACTIVE","etag":"1_f3f27ca4-f133-4de3-8592-def0b72983f4"}
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
+[info] 
+[info] i  Detected a .git folder at /home/user/Pho-Viet 
+[info] i  Authorizing with GitHub to upload your service account to a GitHub repository's secrets store. 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://github.com/login/oauth/authorize?client_id=89cf50f02ac6aaed3484&state=759720304&redirect_uri=http%3A%2F%2Flocalhost%3A9005&scope=read%3Auser%20repo%20public_repo
+[info] 
+[info] Waiting for authentication...
