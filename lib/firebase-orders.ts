@@ -15,6 +15,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { Order, OrderItem } from './types';
+import * as mockStorage from './mock-storage';
 
 const ORDERS_COLLECTION = 'orders';
 
@@ -36,10 +37,12 @@ const timestampToDate = (timestamp: Timestamp): Date => {
  * Tạo đơn hàng mới
  */
 export const createOrder = async (order: Omit<Order, 'id'>): Promise<string | null> => {
+  // Use mock storage if Firebase is not configured
   if (!db) {
-    console.warn('Firebase not initialized');
-    return null;
+    console.info('Using mock storage (Firebase not configured)');
+    return mockStorage.mockCreateOrder(order);
   }
+  
   try {
     const orderData = {
       ...order,
@@ -48,8 +51,8 @@ export const createOrder = async (order: Omit<Order, 'id'>): Promise<string | nu
     const docRef = await addDoc(collection(db, ORDERS_COLLECTION), orderData);
     return docRef.id;
   } catch (error) {
-    console.error('Error creating order:', error);
-    return null;
+    console.error('Error creating order in Firebase, falling back to mock storage:', error);
+    return mockStorage.mockCreateOrder(order);
   }
 };
 
@@ -58,9 +61,9 @@ export const createOrder = async (order: Omit<Order, 'id'>): Promise<string | nu
  */
 export const getOrder = async (id: string): Promise<Order | null> => {
   if (!db) {
-    console.warn('Firebase not initialized');
-    return null;
+    return mockStorage.mockGetOrder(id);
   }
+  
   try {
     const docRef = doc(db, ORDERS_COLLECTION, id);
     const docSnap = await getDoc(docRef);
@@ -74,8 +77,8 @@ export const getOrder = async (id: string): Promise<Order | null> => {
     }
     return null;
   } catch (error) {
-    console.error('Error getting order:', error);
-    return null;
+    console.error('Error getting order from Firebase, falling back to mock storage:', error);
+    return mockStorage.mockGetOrder(id);
   }
 };
 
@@ -84,9 +87,9 @@ export const getOrder = async (id: string): Promise<Order | null> => {
  */
 export const getOrders = async (): Promise<Order[]> => {
   if (!db) {
-    console.warn('Firebase not initialized');
-    return [];
+    return mockStorage.mockGetOrders();
   }
+  
   try {
     const q = query(collection(db, ORDERS_COLLECTION), orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
@@ -101,8 +104,8 @@ export const getOrders = async (): Promise<Order[]> => {
     });
     return orders;
   } catch (error) {
-    console.error('Error getting orders:', error);
-    return [];
+    console.error('Error getting orders from Firebase, falling back to mock storage:', error);
+    return mockStorage.mockGetOrders();
   }
 };
 
@@ -111,9 +114,9 @@ export const getOrders = async (): Promise<Order[]> => {
  */
 export const getOrdersByStatus = async (status: Order['status']): Promise<Order[]> => {
   if (!db) {
-    console.warn('Firebase not initialized');
-    return [];
+    return mockStorage.mockGetOrdersByStatus(status);
   }
+  
   try {
     const q = query(
       collection(db, ORDERS_COLLECTION),
@@ -132,8 +135,8 @@ export const getOrdersByStatus = async (status: Order['status']): Promise<Order[
     });
     return orders;
   } catch (error) {
-    console.error('Error getting orders by status:', error);
-    return [];
+    console.error('Error getting orders by status from Firebase, falling back to mock storage:', error);
+    return mockStorage.mockGetOrdersByStatus(status);
   }
 };
 
@@ -142,9 +145,9 @@ export const getOrdersByStatus = async (status: Order['status']): Promise<Order[
  */
 export const getOrdersByTable = async (tableNumber: number): Promise<Order[]> => {
   if (!db) {
-    console.warn('Firebase not initialized');
-    return [];
+    return mockStorage.mockGetOrdersByTable(tableNumber);
   }
+  
   try {
     const q = query(
       collection(db, ORDERS_COLLECTION),
@@ -163,8 +166,8 @@ export const getOrdersByTable = async (tableNumber: number): Promise<Order[]> =>
     });
     return orders;
   } catch (error) {
-    console.error('Error getting orders by table:', error);
-    return [];
+    console.error('Error getting orders by table from Firebase, falling back to mock storage:', error);
+    return mockStorage.mockGetOrdersByTable(tableNumber);
   }
 };
 
@@ -176,16 +179,16 @@ export const updateOrderStatus = async (
   status: Order['status']
 ): Promise<boolean> => {
   if (!db) {
-    console.warn('Firebase not initialized');
-    return false;
+    return mockStorage.mockUpdateOrderStatus(id, status);
   }
+  
   try {
     const docRef = doc(db, ORDERS_COLLECTION, id);
     await updateDoc(docRef, { status });
     return true;
   } catch (error) {
-    console.error('Error updating order status:', error);
-    return false;
+    console.error('Error updating order status in Firebase, falling back to mock storage:', error);
+    return mockStorage.mockUpdateOrderStatus(id, status);
   }
 };
 
@@ -197,9 +200,9 @@ export const updateOrder = async (
   data: Partial<Omit<Order, 'id'>>
 ): Promise<boolean> => {
   if (!db) {
-    console.warn('Firebase not initialized');
-    return false;
+    return mockStorage.mockUpdateOrder(id, data);
   }
+  
   try {
     const docRef = doc(db, ORDERS_COLLECTION, id);
     const updateData: DocumentData = { ...data };
@@ -209,8 +212,8 @@ export const updateOrder = async (
     await updateDoc(docRef, updateData);
     return true;
   } catch (error) {
-    console.error('Error updating order:', error);
-    return false;
+    console.error('Error updating order in Firebase, falling back to mock storage:', error);
+    return mockStorage.mockUpdateOrder(id, data);
   }
 };
 
@@ -219,15 +222,15 @@ export const updateOrder = async (
  */
 export const deleteOrder = async (id: string): Promise<boolean> => {
   if (!db) {
-    console.warn('Firebase not initialized');
-    return false;
+    return mockStorage.mockDeleteOrder(id);
   }
+  
   try {
     await deleteDoc(doc(db, ORDERS_COLLECTION, id));
     return true;
   } catch (error) {
-    console.error('Error deleting order:', error);
-    return false;
+    console.error('Error deleting order from Firebase, falling back to mock storage:', error);
+    return mockStorage.mockDeleteOrder(id);
   }
 };
 
@@ -239,34 +242,47 @@ export const subscribeToOrders = (
   status?: Order['status']
 ): (() => void) => {
   if (!db) {
-    console.warn('Firebase not initialized');
-    return () => {};
-  }
-  let q;
-  if (status) {
-    q = query(
-      collection(db, ORDERS_COLLECTION),
-      where('status', '==', status),
-      orderBy('createdAt', 'desc')
-    );
-  } else {
-    q = query(collection(db, ORDERS_COLLECTION), orderBy('createdAt', 'desc'));
+    return mockStorage.mockSubscribeToOrders(callback, status);
   }
   
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    const orders: Order[] = [];
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      orders.push({
-        id: doc.id,
-        ...data,
-        createdAt: timestampToDate(data.createdAt),
-      } as Order);
-    });
-    callback(orders);
-  });
+  try {
+    let q;
+    if (status) {
+      q = query(
+        collection(db, ORDERS_COLLECTION),
+        where('status', '==', status),
+        orderBy('createdAt', 'desc')
+      );
+    } else {
+      q = query(collection(db, ORDERS_COLLECTION), orderBy('createdAt', 'desc'));
+    }
+    
+    const unsubscribe = onSnapshot(
+      q, 
+      (querySnapshot) => {
+        const orders: Order[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          orders.push({
+            id: doc.id,
+            ...data,
+            createdAt: timestampToDate(data.createdAt),
+          } as Order);
+        });
+        callback(orders);
+      },
+      (error) => {
+        console.error('Error subscribing to orders in Firebase, falling back to mock storage:', error);
+        // Fallback to mock storage on error
+        mockStorage.mockSubscribeToOrders(callback, status);
+      }
+    );
 
-  return unsubscribe;
+    return unsubscribe;
+  } catch (error) {
+    console.error('Error setting up subscription, using mock storage:', error);
+    return mockStorage.mockSubscribeToOrders(callback, status);
+  }
 };
 
 /**
@@ -277,27 +293,40 @@ export const subscribeToOrdersByTable = (
   callback: (orders: Order[]) => void
 ): (() => void) => {
   if (!db) {
-    console.warn('Firebase not initialized');
-    return () => {};
+    return mockStorage.mockSubscribeToOrdersByTable(tableNumber, callback);
   }
-  const q = query(
-    collection(db, ORDERS_COLLECTION),
-    where('tableNumber', '==', tableNumber),
-    orderBy('createdAt', 'desc')
-  );
   
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    const orders: Order[] = [];
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      orders.push({
-        id: doc.id,
-        ...data,
-        createdAt: timestampToDate(data.createdAt),
-      } as Order);
-    });
-    callback(orders);
-  });
+  try {
+    const q = query(
+      collection(db, ORDERS_COLLECTION),
+      where('tableNumber', '==', tableNumber),
+      orderBy('createdAt', 'desc')
+    );
+    
+    const unsubscribe = onSnapshot(
+      q, 
+      (querySnapshot) => {
+        const orders: Order[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          orders.push({
+            id: doc.id,
+            ...data,
+            createdAt: timestampToDate(data.createdAt),
+          } as Order);
+        });
+        callback(orders);
+      },
+      (error) => {
+        console.error('Error subscribing to orders by table in Firebase, falling back to mock storage:', error);
+        // Fallback to mock storage on error
+        mockStorage.mockSubscribeToOrdersByTable(tableNumber, callback);
+      }
+    );
 
-  return unsubscribe;
+    return unsubscribe;
+  } catch (error) {
+    console.error('Error setting up subscription, using mock storage:', error);
+    return mockStorage.mockSubscribeToOrdersByTable(tableNumber, callback);
+  }
 };

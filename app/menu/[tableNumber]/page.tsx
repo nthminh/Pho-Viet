@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { menuItems, categories } from '@/lib/menu-data';
-import { OrderItem } from '@/lib/types';
+import { getMenuItems, subscribeToMenuItems } from '@/lib/firebase-menu';
+import { createOrder } from '@/lib/firebase-orders';
+import { categories } from '@/lib/menu-data';
+import { MenuItem, OrderItem } from '@/lib/types';
 import { ShoppingCart, Plus, Minus, X, Camera } from 'lucide-react';
 import html2canvas from 'html2canvas';
 
@@ -18,6 +20,32 @@ export default function MenuPage() {
   const [showReceipt, setShowReceipt] = useState(false);
   const [orderId, setOrderId] = useState('');
   const receiptRef = useRef<HTMLDivElement>(null);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Load menu items on mount
+  useEffect(() => {
+    const loadMenu = async () => {
+      try {
+        const items = await getMenuItems();
+        setMenuItems(items);
+      } catch (error) {
+        console.error('Error loading menu:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadMenu();
+
+    // Subscribe to real-time updates
+    const unsubscribe = subscribeToMenuItems((items) => {
+      setMenuItems(items);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const filteredItems = selectedCategory === 'Tất Cả'
     ? menuItems.filter(item => item.available)
@@ -56,15 +84,35 @@ export default function MenuPage() {
     return price.toLocaleString('vi-VN') + 'đ';
   };
 
-  const handleSubmitOrder = () => {
+  const handleSubmitOrder = async () => {
     if (cart.length === 0) {
       alert('Giỏ hàng trống!');
       return;
     }
-    const newOrderId = `DH${Date.now().toString().slice(-6)}`;
-    setOrderId(newOrderId);
-    setShowReceipt(true);
-    setShowCart(false);
+    
+    // Create order
+    const order = {
+      tableNumber,
+      items: cart,
+      totalAmount: getTotalAmount(),
+      status: 'pending' as const,
+      createdAt: new Date(),
+      customerName: customerName || undefined,
+    };
+
+    try {
+      const newOrderId = await createOrder(order);
+      if (newOrderId) {
+        setOrderId(newOrderId);
+        setShowReceipt(true);
+        setShowCart(false);
+      } else {
+        alert('Không thể tạo đơn hàng. Vui lòng thử lại!');
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+      alert('Có lỗi xảy ra khi tạo đơn hàng!');
+    }
   };
 
   const downloadReceipt = async () => {
@@ -126,8 +174,18 @@ export default function MenuPage() {
 
       {/* Menu Items */}
       <div className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredItems.map(item => (
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+            <p className="mt-4 text-gray-600">Đang tải menu...</p>
+          </div>
+        ) : filteredItems.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600">Không có món ăn nào trong danh mục này</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredItems.map(item => (
             <div key={item.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               <div className="h-48 bg-gradient-to-br from-red-100 to-orange-100 flex items-center justify-center">
                 <span className="text-6xl">🍜</span>
@@ -148,8 +206,9 @@ export default function MenuPage() {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Cart Modal */}

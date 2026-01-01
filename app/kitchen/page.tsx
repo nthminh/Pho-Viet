@@ -3,80 +3,33 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Clock } from 'lucide-react';
-
-interface KitchenOrder {
-  id: string;
-  tableNumber: number;
-  orderNumber: number;
-  items: Array<{ name: string; quantity: number }>;
-  status: string;
-  createdAt: Date;
-  timeElapsed: number;
-}
+import { subscribeToOrders, updateOrderStatus } from '@/lib/firebase-orders';
+import { Order } from '@/lib/types';
 
 export default function KitchenPage() {
-  const [orders, setOrders] = useState<KitchenOrder[]>([
-    {
-      id: 'DH001',
-      tableNumber: 1,
-      orderNumber: 1,
-      items: [
-        { name: 'Phở Bò Tái', quantity: 2 },
-        { name: 'Trà Đá', quantity: 2 },
-      ],
-      status: 'pending',
-      createdAt: new Date(Date.now() - 5 * 60000),
-      timeElapsed: 5,
-    },
-    {
-      id: 'DH002',
-      tableNumber: 3,
-      orderNumber: 2,
-      items: [
-        { name: 'Phở Gà', quantity: 1 },
-        { name: 'Gỏi Cuốn', quantity: 1 },
-      ],
-      status: 'preparing',
-      createdAt: new Date(Date.now() - 10 * 60000),
-      timeElapsed: 10,
-    },
-    {
-      id: 'DH003',
-      tableNumber: 5,
-      orderNumber: 3,
-      items: [
-        { name: 'Bún Bò Huế', quantity: 2 },
-        { name: 'Chả Giò', quantity: 1 },
-      ],
-      status: 'pending',
-      createdAt: new Date(Date.now() - 2 * 60000),
-      timeElapsed: 2,
-    },
-  ]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  // Subscribe to orders on mount
   useEffect(() => {
-    const interval = setInterval(() => {
-      setOrders(prevOrders => 
-        prevOrders.map(order => ({
-          ...order,
-          timeElapsed: Math.floor((Date.now() - order.createdAt.getTime()) / 60000)
-        }))
-      );
-    }, 60000);
+    const unsubscribe = subscribeToOrders((orders) => {
+      setOrders(orders);
+      setLoading(false);
+    });
 
-    return () => clearInterval(interval);
+    return () => unsubscribe();
   }, []);
 
-  const markAsReady = (orderId: string) => {
-    setOrders(orders.map(order =>
-      order.id === orderId ? { ...order, status: 'ready' } : order
-    ));
+  const markAsReady = async (orderId: string) => {
+    await updateOrderStatus(orderId, 'ready');
   };
 
-  const startPreparing = (orderId: string) => {
-    setOrders(orders.map(order =>
-      order.id === orderId ? { ...order, status: 'preparing' } : order
-    ));
+  const startPreparing = async (orderId: string) => {
+    await updateOrderStatus(orderId, 'preparing');
+  };
+
+  const getTimeElapsed = (createdAt: Date) => {
+    return Math.floor((Date.now() - createdAt.getTime()) / 60000);
   };
 
   const getTimeColor = (minutes: number) => {
@@ -132,11 +85,11 @@ export default function KitchenPage() {
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <div className="text-2xl font-bold text-yellow-400">BÀN {order.tableNumber}</div>
-                      <div className="text-sm text-gray-400">Đơn #{order.orderNumber}</div>
+                      <div className="text-sm text-gray-400">Đơn #{order.id.slice(-4)}</div>
                     </div>
                     <div className="text-right">
-                      <div className={`text-xl font-bold ${getTimeColor(order.timeElapsed)}`}>
-                        {order.timeElapsed} phút
+                      <div className={`text-xl font-bold ${getTimeColor(getTimeElapsed(order.createdAt))}`}>
+                        {getTimeElapsed(order.createdAt)} phút
                       </div>
                       <div className="text-xs text-gray-400">
                         <Clock className="w-4 h-4 inline" />
@@ -147,7 +100,7 @@ export default function KitchenPage() {
                     {order.items.map((item, idx) => (
                       <div key={idx} className="bg-gray-700 rounded p-2">
                         <div className="flex justify-between items-center">
-                          <span className="font-semibold text-lg">{item.name}</span>
+                          <span className="font-semibold text-lg">{item.menuItem.name}</span>
                           <span className="bg-yellow-500 text-black px-3 py-1 rounded-full font-bold">
                             x{item.quantity}
                           </span>
@@ -177,11 +130,11 @@ export default function KitchenPage() {
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <div className="text-2xl font-bold text-blue-400">BÀN {order.tableNumber}</div>
-                      <div className="text-sm text-gray-400">Đơn #{order.orderNumber}</div>
+                      <div className="text-sm text-gray-400">Đơn #{order.id.slice(-4)}</div>
                     </div>
                     <div className="text-right">
-                      <div className={`text-xl font-bold ${getTimeColor(order.timeElapsed)}`}>
-                        {order.timeElapsed} phút
+                      <div className={`text-xl font-bold ${getTimeColor(getTimeElapsed(order.createdAt))}`}>
+                        {getTimeElapsed(order.createdAt)} phút
                       </div>
                       <div className="text-xs text-gray-400">
                         <Clock className="w-4 h-4 inline" />
@@ -192,7 +145,7 @@ export default function KitchenPage() {
                     {order.items.map((item, idx) => (
                       <div key={idx} className="bg-gray-700 rounded p-2">
                         <div className="flex justify-between items-center">
-                          <span className="font-semibold text-lg">{item.name}</span>
+                          <span className="font-semibold text-lg">{item.menuItem.name}</span>
                           <span className="bg-blue-500 text-white px-3 py-1 rounded-full font-bold">
                             x{item.quantity}
                           </span>
@@ -222,11 +175,11 @@ export default function KitchenPage() {
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <div className="text-2xl font-bold text-green-400">BÀN {order.tableNumber}</div>
-                      <div className="text-sm text-gray-400">Đơn #{order.orderNumber}</div>
+                      <div className="text-sm text-gray-400">Đơn #{order.id.slice(-4)}</div>
                     </div>
                     <div className="text-right">
-                      <div className={`text-xl font-bold ${getTimeColor(order.timeElapsed)}`}>
-                        {order.timeElapsed} phút
+                      <div className={`text-xl font-bold ${getTimeColor(getTimeElapsed(order.createdAt))}`}>
+                        {getTimeElapsed(order.createdAt)} phút
                       </div>
                       <div className="text-xs text-gray-400">
                         <Clock className="w-4 h-4 inline" />
@@ -237,7 +190,7 @@ export default function KitchenPage() {
                     {order.items.map((item, idx) => (
                       <div key={idx} className="bg-gray-700 rounded p-2">
                         <div className="flex justify-between items-center">
-                          <span className="font-semibold text-lg">{item.name}</span>
+                          <span className="font-semibold text-lg">{item.menuItem.name}</span>
                           <span className="bg-green-500 text-white px-3 py-1 rounded-full font-bold">
                             x{item.quantity}
                           </span>

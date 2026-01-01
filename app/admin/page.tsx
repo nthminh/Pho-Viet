@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Plus, Edit, Trash2, Upload, Image as ImageIcon } from 'lucide-react';
-import { menuItems as initialMenuItems } from '@/lib/menu-data';
+import { subscribeToMenuItems, addMenuItem, updateMenuItem, deleteMenuItem } from '@/lib/firebase-menu';
+import { MenuItem } from '@/lib/types';
 import { QRCodeSVG } from 'qrcode.react';
 
 export default function AdminPage() {
-  const [menuItems, setMenuItems] = useState(initialMenuItems);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
   const [selectedTable, setSelectedTable] = useState(1);
@@ -21,37 +23,48 @@ export default function AdminPage() {
     available: true,
   });
 
+  // Subscribe to menu items on mount
+  useEffect(() => {
+    const unsubscribe = subscribeToMenuItems((items) => {
+      setMenuItems(items);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const formatPrice = (price: number) => {
     return price.toLocaleString('vi-VN') + 'đ';
   };
 
-  const handleAddItem = () => {
-    const item = {
-      ...newItem,
-      id: `item-${Date.now()}`,
-    };
-    setMenuItems([...menuItems, item]);
-    setShowAddModal(false);
-    setNewItem({
-      name: '',
-      nameEn: '',
-      description: '',
-      price: 0,
-      category: 'Phở',
-      imageUrl: '',
-      available: true,
-    });
+  const handleAddItem = async () => {
+    const result = await addMenuItem(newItem);
+    if (result) {
+      setShowAddModal(false);
+      setNewItem({
+        name: '',
+        nameEn: '',
+        description: '',
+        price: 0,
+        category: 'Phở',
+        imageUrl: '',
+        available: true,
+      });
+    } else {
+      alert('Không thể thêm món. Vui lòng thử lại!');
+    }
   };
 
-  const toggleAvailability = (itemId: string) => {
-    setMenuItems(menuItems.map(item =>
-      item.id === itemId ? { ...item, available: !item.available } : item
-    ));
+  const toggleAvailability = async (itemId: string) => {
+    const item = menuItems.find(i => i.id === itemId);
+    if (item) {
+      await updateMenuItem(itemId, { available: !item.available });
+    }
   };
 
-  const deleteItem = (itemId: string) => {
+  const deleteItemHandler = async (itemId: string) => {
     if (confirm('Bạn có chắc muốn xóa món này?')) {
-      setMenuItems(menuItems.filter(item => item.id !== itemId));
+      await deleteMenuItem(itemId);
     }
   };
 
@@ -171,7 +184,7 @@ export default function AdminPage() {
                           <Edit className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => deleteItem(item.id)}
+                          onClick={() => deleteItemHandler(item.id)}
                           className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded"
                           title="Xóa"
                         >
