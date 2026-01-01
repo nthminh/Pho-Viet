@@ -408,7 +408,7 @@ export default function AdminPage() {
                   <input
                     type="number"
                     value={editingItem.price}
-                    onChange={(e) => setEditingItem({ ...editingItem, price: parseInt(e.target.value) })}
+                    onChange={(e) => setEditingItem({ ...editingItem, price: parseInt(e.target.value) || 0 })}
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                     placeholder="65000"
                   />
