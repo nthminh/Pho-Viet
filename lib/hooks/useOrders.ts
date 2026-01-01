@@ -8,6 +8,7 @@ import {
   updateOrderStatus as updateOrderStatusFirebase,
   updateOrder as updateOrderFirebase
 } from '../firebase-orders';
+import { hasFirebaseConfig, generateOrderId } from '../utils';
 
 /**
  * Custom hook để quản lý orders
@@ -17,17 +18,10 @@ export function useOrders(status?: Order['status']) {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [useFirebase, setUseFirebase] = useState(false);
+  const useFirebase = hasFirebaseConfig();
 
   useEffect(() => {
-    // Kiểm tra xem Firebase đã được cấu hình chưa
-    const hasFirebaseConfig = 
-      process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
-      process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== 'your-api-key';
-
-    setUseFirebase(!!hasFirebaseConfig);
-
-    if (hasFirebaseConfig) {
+    if (useFirebase) {
       // Sử dụng Firebase real-time
       const unsubscribe = subscribeToOrders((firebaseOrders) => {
         setOrders(firebaseOrders);
@@ -39,7 +33,7 @@ export function useOrders(status?: Order['status']) {
       // Không có Firebase, sử dụng mock data
       setLoading(false);
     }
-  }, [status]);
+  }, [status, useFirebase]);
 
   const createOrder = async (order: Omit<Order, 'id'>) => {
     if (useFirebase) {
@@ -47,7 +41,7 @@ export function useOrders(status?: Order['status']) {
       return id;
     } else {
       // Mock: thêm vào local state
-      const newOrder = { ...order, id: `DH${Date.now().toString().slice(-6)}` };
+      const newOrder = { ...order, id: generateOrderId() };
       setOrders([newOrder, ...orders]);
       return newOrder.id;
     }

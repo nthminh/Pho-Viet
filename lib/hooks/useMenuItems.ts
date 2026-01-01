@@ -10,6 +10,7 @@ import {
   deleteMenuItem as deleteMenuItemFirebase
 } from '../firebase-menu';
 import { menuItems as mockMenuItems } from '../menu-data';
+import { hasFirebaseConfig, generateItemId } from '../utils';
 
 /**
  * Custom hook để quản lý menu items
@@ -19,17 +20,10 @@ export function useMenuItems() {
   const [items, setItems] = useState<MenuItem[]>(mockMenuItems);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [useFirebase, setUseFirebase] = useState(false);
+  const useFirebase = hasFirebaseConfig();
 
   useEffect(() => {
-    // Kiểm tra xem Firebase đã được cấu hình chưa
-    const hasFirebaseConfig = 
-      process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
-      process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== 'your-api-key';
-
-    setUseFirebase(!!hasFirebaseConfig);
-
-    if (hasFirebaseConfig) {
+    if (useFirebase) {
       // Sử dụng Firebase real-time
       const unsubscribe = subscribeToMenuItems((firebaseItems) => {
         if (firebaseItems.length > 0) {
@@ -44,7 +38,7 @@ export function useMenuItems() {
       setItems(mockMenuItems);
       setLoading(false);
     }
-  }, []);
+  }, [useFirebase]);
 
   const addItem = async (item: Omit<MenuItem, 'id'>) => {
     if (useFirebase) {
@@ -52,7 +46,7 @@ export function useMenuItems() {
       return id;
     } else {
       // Mock: thêm vào local state
-      const newItem = { ...item, id: `item-${Date.now()}` };
+      const newItem = { ...item, id: generateItemId() };
       setItems([...items, newItem]);
       return newItem.id;
     }

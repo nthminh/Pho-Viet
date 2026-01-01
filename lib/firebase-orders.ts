@@ -36,6 +36,10 @@ const timestampToDate = (timestamp: Timestamp): Date => {
  * Tạo đơn hàng mới
  */
 export const createOrder = async (order: Omit<Order, 'id'>): Promise<string | null> => {
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return null;
+  }
   try {
     const orderData = {
       ...order,
@@ -53,6 +57,10 @@ export const createOrder = async (order: Omit<Order, 'id'>): Promise<string | nu
  * Lấy đơn hàng theo ID
  */
 export const getOrder = async (id: string): Promise<Order | null> => {
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return null;
+  }
   try {
     const docRef = doc(db, ORDERS_COLLECTION, id);
     const docSnap = await getDoc(docRef);
@@ -75,6 +83,10 @@ export const getOrder = async (id: string): Promise<Order | null> => {
  * Lấy tất cả đơn hàng
  */
 export const getOrders = async (): Promise<Order[]> => {
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return [];
+  }
   try {
     const q = query(collection(db, ORDERS_COLLECTION), orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
@@ -98,6 +110,10 @@ export const getOrders = async (): Promise<Order[]> => {
  * Lấy đơn hàng theo trạng thái
  */
 export const getOrdersByStatus = async (status: Order['status']): Promise<Order[]> => {
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return [];
+  }
   try {
     const q = query(
       collection(db, ORDERS_COLLECTION),
@@ -125,6 +141,10 @@ export const getOrdersByStatus = async (status: Order['status']): Promise<Order[
  * Lấy đơn hàng theo số bàn
  */
 export const getOrdersByTable = async (tableNumber: number): Promise<Order[]> => {
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return [];
+  }
   try {
     const q = query(
       collection(db, ORDERS_COLLECTION),
@@ -155,6 +175,10 @@ export const updateOrderStatus = async (
   id: string, 
   status: Order['status']
 ): Promise<boolean> => {
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return false;
+  }
   try {
     const docRef = doc(db, ORDERS_COLLECTION, id);
     await updateDoc(docRef, { status });
@@ -172,6 +196,10 @@ export const updateOrder = async (
   id: string, 
   data: Partial<Omit<Order, 'id'>>
 ): Promise<boolean> => {
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return false;
+  }
   try {
     const docRef = doc(db, ORDERS_COLLECTION, id);
     const updateData: DocumentData = { ...data };
@@ -190,6 +218,10 @@ export const updateOrder = async (
  * Xóa đơn hàng
  */
 export const deleteOrder = async (id: string): Promise<boolean> => {
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return false;
+  }
   try {
     await deleteDoc(doc(db, ORDERS_COLLECTION, id));
     return true;
@@ -206,6 +238,10 @@ export const subscribeToOrders = (
   callback: (orders: Order[]) => void,
   status?: Order['status']
 ): (() => void) => {
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return () => {};
+  }
   let q;
   if (status) {
     q = query(
@@ -240,6 +276,10 @@ export const subscribeToOrdersByTable = (
   tableNumber: number,
   callback: (orders: Order[]) => void
 ): (() => void) => {
+  if (!db) {
+    console.warn('Firebase not initialized');
+    return () => {};
+  }
   const q = query(
     collection(db, ORDERS_COLLECTION),
     where('tableNumber', '==', tableNumber),
