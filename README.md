@@ -38,6 +38,7 @@ App quản lý quán phở hiện đại với đặt món bằng QR code, POS, 
 ### Yêu Cầu
 - Node.js 18+ 
 - npm hoặc yarn
+- Firebase account (để đồng bộ dữ liệu)
 
 ### Các Bước Cài Đặt
 
@@ -52,12 +53,21 @@ cd Pho-Viet
 npm install
 ```
 
-3. Chạy development server:
+3. Cấu hình Firebase:
+```bash
+# Copy file cấu hình mẫu
+cp .env.local.example .env.local
+
+# Mở .env.local và điền thông tin Firebase của bạn
+# Xem hướng dẫn chi tiết trong FIREBASE_SETUP.md
+```
+
+4. Chạy development server:
 ```bash
 npm run dev
 ```
 
-4. Mở trình duyệt và truy cập:
+5. Mở trình duyệt và truy cập:
 - Trang chủ: http://localhost:3000
 - Menu khách (bàn 1): http://localhost:3000/menu/1
 - POS: http://localhost:3000/pos
@@ -76,9 +86,22 @@ npm start
 - **Framework**: Next.js 14 (React 18)
 - **Styling**: Tailwind CSS
 - **Language**: TypeScript
+- **Database**: Firebase Firestore
+- **Real-time Sync**: Firebase Real-time Database
 - **UI Components**: Lucide React Icons
 - **QR Code**: qrcode.react
 - **Screenshot**: html2canvas
+
+## 🔥 Firebase Integration
+
+Ứng dụng đã được tích hợp đầy đủ với Firebase để đồng bộ dữ liệu lên cloud:
+
+- ✅ **Firestore Database**: Lưu trữ menu và đơn hàng
+- ✅ **Real-time Sync**: Cập nhật tự động trên tất cả thiết bị
+- ✅ **Cloud Storage**: Lưu trữ hình ảnh món ăn
+- ✅ **Security Rules**: Bảo mật dữ liệu
+
+📖 **Xem hướng dẫn chi tiết:** [FIREBASE_SETUP.md](./FIREBASE_SETUP.md)
 
 ## 📖 Hướng Dẫn Sử Dụng
 
@@ -138,13 +161,21 @@ Hệ thống hỗ trợ tích hợp AI để xử lý ảnh món ăn:
 ### Quản Lý Menu
 ![Admin Panel](https://github.com/user-attachments/assets/657c6d9e-f154-4579-960f-8fa079f0a716)
 
-## 🔮 Tính Năng Tương Lai
+## 🔮 Tính Năng Đã Hoàn Thành và Tương Lai
 
-- [ ] Backend API với database thực
-- [ ] Xác thực người dùng
-- [ ] Báo cáo thống kê chi tiết
-- [ ] Tích hợp thanh toán online
-- [ ] Quản lý nhân viên và ca làm việc
+### ✅ Đã Triển Khai
+- [x] ✨ Firebase Firestore integration
+- [x] 🔄 Real-time data synchronization
+- [x] ☁️ Cloud data storage
+- [x] 📊 Menu management với Firebase
+- [x] 📝 Order management với Firebase
+- [x] 🔒 Security rules cơ bản
+
+### 🔮 Tính Năng Tương Lai
+- [ ] 🔐 Xác thực người dùng (Firebase Auth)
+- [ ] 📊 Báo cáo thống kê chi tiết
+- [ ] 💳 Tích hợp thanh toán online
+- [ ] 👥 Quản lý nhân viên và ca làm việc
 - [ ] Đánh giá và phản hồi khách hàng
 - [ ] Tích hợp in hóa đơn nhiệt
 - [ ] Mobile app (iOS/Android)
