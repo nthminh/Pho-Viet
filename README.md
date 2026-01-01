@@ -2,6 +2,8 @@
 
 App quản lý quán phở hiện đại với đặt món bằng QR code, POS, và màn hình bếp.
 
+> 🚀 **Muốn deploy app lên web?** → Xem [QUICK_START.md](./QUICK_START.md) để deploy trong 5 phút!
+
 ## ✨ Tính Năng
 
 ### 📱 Menu Khách Hàng (Customer Menu)
@@ -80,6 +82,59 @@ npm run dev
 npm run build
 npm start
 ```
+
+## 🌐 Deploy Lên Web (Đưa App Ra Public)
+
+Bạn muốn đưa app lên web để mọi người có thể truy cập và test thử? Có nhiều cách deploy miễn phí!
+
+### 🚀 Deploy Nhanh Nhất - Vercel (5 phút) ⚡
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/nthminh/Pho-Viet)
+
+**Các bước đơn giản:**
+1. Click nút **"Deploy with Vercel"** ở trên
+2. Login vào Vercel bằng GitHub (miễn phí)
+3. Thêm **6 Environment Variables** từ Firebase (xem bên dưới)
+4. Click **Deploy**
+5. Nhận URL public dạng: `https://pho-viet-xxxxx.vercel.app` 🎉
+
+#### Lấy Firebase Environment Variables:
+1. Truy cập [Firebase Console](https://console.firebase.google.com)
+2. Chọn project → ⚙️ Settings → General
+3. Scroll xuống "Your apps" → Chọn Web app
+4. Copy 6 giá trị này vào Vercel:
+   ```
+   NEXT_PUBLIC_FIREBASE_API_KEY=...
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
+   NEXT_PUBLIC_FIREBASE_APP_ID=...
+   ```
+
+### 📚 Các Phương Án Deploy Khác
+
+| Platform | Độ Khó | Giá | Tốc Độ | Link Hướng Dẫn |
+|----------|--------|-----|--------|----------------|
+| **Vercel** ⭐ | Dễ nhất | Miễn phí | Rất nhanh | [Chi tiết](./DEPLOYMENT.md#1-deploy-lên-vercel-khuyến-nghị) |
+| **Netlify** | Dễ | Miễn phí | Nhanh | [Chi tiết](./DEPLOYMENT.md#2-deploy-lên-netlify) |
+| **Firebase Hosting** | Trung bình | Miễn phí* | Nhanh | [Chi tiết](./DEPLOYMENT.md#3-deploy-lên-firebase-hosting) |
+| **VPS/Server** | Khó | $5+/tháng | Tùy VPS | [Chi tiết](./DEPLOYMENT.md#4-deploy-trên-vpsserver-tự-quản) |
+
+### 📖 Tài Liệu Deploy Đầy Đủ
+
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Hướng dẫn chi tiết từng bước cho tất cả platforms
+- **[DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md)** - Checklist để đảm bảo deploy thành công
+- **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - Giải quyết các lỗi thường gặp
+
+### ⚡ Quick Links cho Testing
+
+Sau khi deploy, test các trang sau:
+- `https://your-app-url/` - Trang chủ
+- `https://your-app-url/menu/1` - Menu khách hàng (bàn 1)
+- `https://your-app-url/pos` - Hệ thống POS
+- `https://your-app-url/kitchen` - Màn hình bếp
+- `https://your-app-url/admin` - Quản lý menu
 
 ## 🛠️ Công Nghệ Sử Dụng
 
