@@ -257,21 +257,26 @@ export const subscribeToOrders = (
       q = query(collection(db, ORDERS_COLLECTION), orderBy('createdAt', 'desc'));
     }
     
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const orders: Order[] = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        orders.push({
-          id: doc.id,
-          ...data,
-          createdAt: timestampToDate(data.createdAt),
-        } as Order);
-      });
-      callback(orders);
-    }, (error) => {
-      console.error('Error subscribing to orders in Firebase, falling back to mock storage:', error);
-      return mockStorage.mockSubscribeToOrders(callback, status);
-    });
+    const unsubscribe = onSnapshot(
+      q, 
+      (querySnapshot) => {
+        const orders: Order[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          orders.push({
+            id: doc.id,
+            ...data,
+            createdAt: timestampToDate(data.createdAt),
+          } as Order);
+        });
+        callback(orders);
+      },
+      (error) => {
+        console.error('Error subscribing to orders in Firebase, falling back to mock storage:', error);
+        // Fallback to mock storage on error
+        mockStorage.mockSubscribeToOrders(callback, status);
+      }
+    );
 
     return unsubscribe;
   } catch (error) {
@@ -298,21 +303,26 @@ export const subscribeToOrdersByTable = (
       orderBy('createdAt', 'desc')
     );
     
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const orders: Order[] = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        orders.push({
-          id: doc.id,
-          ...data,
-          createdAt: timestampToDate(data.createdAt),
-        } as Order);
-      });
-      callback(orders);
-    }, (error) => {
-      console.error('Error subscribing to orders by table in Firebase, falling back to mock storage:', error);
-      return mockStorage.mockSubscribeToOrdersByTable(tableNumber, callback);
-    });
+    const unsubscribe = onSnapshot(
+      q, 
+      (querySnapshot) => {
+        const orders: Order[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          orders.push({
+            id: doc.id,
+            ...data,
+            createdAt: timestampToDate(data.createdAt),
+          } as Order);
+        });
+        callback(orders);
+      },
+      (error) => {
+        console.error('Error subscribing to orders by table in Firebase, falling back to mock storage:', error);
+        // Fallback to mock storage on error
+        mockStorage.mockSubscribeToOrdersByTable(tableNumber, callback);
+      }
+    );
 
     return unsubscribe;
   } catch (error) {

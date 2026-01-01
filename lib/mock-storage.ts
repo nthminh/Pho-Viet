@@ -14,7 +14,7 @@ let menuListeners: Array<(items: MenuItem[]) => void> = [];
 let orderListeners: Array<(orders: Order[]) => void> = [];
 
 // Helper to generate IDs
-const generateId = () => `id_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+const generateId = () => `id_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
 
 /**
  * Menu Items Operations

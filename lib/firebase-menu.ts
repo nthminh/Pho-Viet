@@ -128,16 +128,21 @@ export const subscribeToMenuItems = (
   try {
     const q = query(collection(db, MENU_COLLECTION), orderBy('category'));
     
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const items: MenuItem[] = [];
-      querySnapshot.forEach((doc) => {
-        items.push({ id: doc.id, ...doc.data() } as MenuItem);
-      });
-      callback(items);
-    }, (error) => {
-      console.error('Error subscribing to menu items in Firebase, falling back to mock storage:', error);
-      return mockStorage.mockSubscribeToMenuItems(callback);
-    });
+    const unsubscribe = onSnapshot(
+      q, 
+      (querySnapshot) => {
+        const items: MenuItem[] = [];
+        querySnapshot.forEach((doc) => {
+          items.push({ id: doc.id, ...doc.data() } as MenuItem);
+        });
+        callback(items);
+      },
+      (error) => {
+        console.error('Error subscribing to menu items in Firebase, falling back to mock storage:', error);
+        // Fallback to mock storage on error
+        mockStorage.mockSubscribeToMenuItems(callback);
+      }
+    );
 
     return unsubscribe;
   } catch (error) {
