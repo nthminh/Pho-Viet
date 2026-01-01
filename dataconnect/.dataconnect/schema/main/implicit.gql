@@ -1,0 +1,42 @@
+extend type Ingredient {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "Ingredient", purpose: IMPLICIT_KEY_FIELD)
+}
+extend type MenuItem {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "MenuItem", purpose: IMPLICIT_KEY_FIELD)
+}
+extend type Order {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "Order", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Order`.`takenBy`. It must match the value of `User`.`id`. See `@ref` for how to customize it.
+  """
+  takenById: UUID @fdc_generated(from: "Order.takenBy", purpose: IMPLICIT_REF_FIELD)
+}
+extend type OrderItem {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "OrderItem", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `OrderItem`.`menuItem`. It must match the value of `MenuItem`.`id`. See `@ref` for how to customize it.
+  """
+  menuItemId: UUID! @fdc_generated(from: "OrderItem.menuItem", purpose: IMPLICIT_REF_FIELD)
+  """
+  ✨ Implicit foreign key field based on `OrderItem`.`order`. It must match the value of `Order`.`id`. See `@ref` for how to customize it.
+  """
+  orderId: UUID! @fdc_generated(from: "OrderItem.order", purpose: IMPLICIT_REF_FIELD)
+}
+extend type User {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "User", purpose: IMPLICIT_KEY_FIELD)
+}

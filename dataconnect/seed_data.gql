@@ -1,0 +1,48 @@
+mutation CreateSeedData @transaction @auth(level: PUBLIC, insecureReason: "This operation is only used to populate the database with seed data.") {
+  user_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      username: "demouser1",
+      email: "demouser1@example.com",
+      passwordHash: "passwordhash1",
+      role: "admin"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      username: "demouser2",
+      email: "demouser2@example.com",
+      passwordHash: "passwordhash2",
+      role: "member"
+    }
+  ])
+  menuItem_insertMany(data: [
+    {
+      id: "650e8400-e29b-41d4-a716-446655440002",
+      name: "pho",
+      type: "soup",
+      price: 12.50,
+      isAvailable: true
+    },
+    {
+      id: "650e8400-e29b-41d4-a716-446655440003",
+      name: "bun bo hue",
+      type: "soup",
+      price: 13.00,
+      isAvailable: true
+    }
+  ])
+  ingredient_insertMany(data: [
+    {
+      id: "750e8400-e29b-41d4-a716-446655440004",
+      name: "beef",
+      unit: "lbs",
+      currentStock: 50
+    },
+    {
+      id: "750e8400-e29b-41d4-a716-446655440005",
+      name: "noodles",
+      unit: "lbs",
+      currentStock: 100
+    }
+  ])
+}

@@ -1,0 +1,562 @@
+extend type Mutation {
+  """
+  ✨ Insert a single `Ingredient` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  ingredient_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Ingredient_Data!
+  ): Ingredient_KeyOutput! @fdc_generated(from: "Ingredient", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `MenuItem` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  menuItem_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: MenuItem_Data!
+  ): MenuItem_KeyOutput! @fdc_generated(from: "MenuItem", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `Order` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  order_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Order_Data!
+  ): Order_KeyOutput! @fdc_generated(from: "Order", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `OrderItem` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  orderItem_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: OrderItem_Data!
+  ): OrderItem_KeyOutput! @fdc_generated(from: "OrderItem", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `User` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  user_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: User_Data!
+  ): User_KeyOutput! @fdc_generated(from: "User", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert `Ingredient` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  ingredient_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Ingredient_Data!]!
+  ): [Ingredient_KeyOutput!]! @fdc_generated(from: "Ingredient", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `MenuItem` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  menuItem_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [MenuItem_Data!]!
+  ): [MenuItem_KeyOutput!]! @fdc_generated(from: "MenuItem", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `Order` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  order_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Order_Data!]!
+  ): [Order_KeyOutput!]! @fdc_generated(from: "Order", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `OrderItem` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  orderItem_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [OrderItem_Data!]!
+  ): [OrderItem_KeyOutput!]! @fdc_generated(from: "OrderItem", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `User` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  user_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [User_Data!]!
+  ): [User_KeyOutput!]! @fdc_generated(from: "User", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert or update a single `Ingredient` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Ingredient`.
+  """
+  ingredient_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Ingredient_Data!
+  ): Ingredient_KeyOutput! @fdc_generated(from: "Ingredient", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `MenuItem` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `MenuItem`.
+  """
+  menuItem_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: MenuItem_Data!
+  ): MenuItem_KeyOutput! @fdc_generated(from: "MenuItem", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `Order` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Order`.
+  """
+  order_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Order_Data!
+  ): Order_KeyOutput! @fdc_generated(from: "Order", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `OrderItem` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `OrderItem`.
+  """
+  orderItem_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: OrderItem_Data!
+  ): OrderItem_KeyOutput! @fdc_generated(from: "OrderItem", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `User` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `User`.
+  """
+  user_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: User_Data!
+  ): User_KeyOutput! @fdc_generated(from: "User", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update `Ingredient` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Ingredient`.
+  """
+  ingredient_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Ingredient_Data!]!
+  ): [Ingredient_KeyOutput!]! @fdc_generated(from: "Ingredient", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `MenuItem` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `MenuItem`.
+  """
+  menuItem_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [MenuItem_Data!]!
+  ): [MenuItem_KeyOutput!]! @fdc_generated(from: "MenuItem", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `Order` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Order`.
+  """
+  order_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Order_Data!]!
+  ): [Order_KeyOutput!]! @fdc_generated(from: "Order", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `OrderItem` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `OrderItem`.
+  """
+  orderItem_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [OrderItem_Data!]!
+  ): [OrderItem_KeyOutput!]! @fdc_generated(from: "OrderItem", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `User` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `User`.
+  """
+  user_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [User_Data!]!
+  ): [User_KeyOutput!]! @fdc_generated(from: "User", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Update a single `Ingredient` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Ingredient` or `null` if not found.
+  """
+  ingredient_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Ingredient_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Ingredient_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Ingredient_Data!
+  ): Ingredient_KeyOutput @fdc_generated(from: "Ingredient", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `MenuItem` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `MenuItem` or `null` if not found.
+  """
+  menuItem_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: MenuItem_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: MenuItem_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: MenuItem_Data!
+  ): MenuItem_KeyOutput @fdc_generated(from: "MenuItem", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `Order` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Order` or `null` if not found.
+  """
+  order_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Order_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Order_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Order_Data!
+  ): Order_KeyOutput @fdc_generated(from: "Order", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `OrderItem` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `OrderItem` or `null` if not found.
+  """
+  orderItem_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: OrderItem_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: OrderItem_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: OrderItem_Data!
+  ): OrderItem_KeyOutput @fdc_generated(from: "OrderItem", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `User` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `User` or `null` if not found.
+  """
+  user_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: User_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: User_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: User_Data!
+  ): User_KeyOutput @fdc_generated(from: "User", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update `Ingredient` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  ingredient_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Ingredient_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Ingredient_Data!
+  ): Int! @fdc_generated(from: "Ingredient", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `MenuItem` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  menuItem_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: MenuItem_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: MenuItem_Data!
+  ): Int! @fdc_generated(from: "MenuItem", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `Order` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  order_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Order_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Order_Data!
+  ): Int! @fdc_generated(from: "Order", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `OrderItem` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  orderItem_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: OrderItem_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: OrderItem_Data!
+  ): Int! @fdc_generated(from: "OrderItem", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `User` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  user_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: User_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: User_Data!
+  ): Int! @fdc_generated(from: "User", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Delete a single `Ingredient` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  ingredient_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Ingredient_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Ingredient_FirstRow
+  ): Ingredient_KeyOutput @fdc_generated(from: "Ingredient", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `MenuItem` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  menuItem_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: MenuItem_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: MenuItem_FirstRow
+  ): MenuItem_KeyOutput @fdc_generated(from: "MenuItem", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `Order` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  order_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Order_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Order_FirstRow
+  ): Order_KeyOutput @fdc_generated(from: "Order", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `OrderItem` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  orderItem_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: OrderItem_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: OrderItem_FirstRow
+  ): OrderItem_KeyOutput @fdc_generated(from: "OrderItem", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `User` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  user_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: User_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: User_FirstRow
+  ): User_KeyOutput @fdc_generated(from: "User", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete `Ingredient` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  ingredient_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Ingredient_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Ingredient", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `MenuItem` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  menuItem_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: MenuItem_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "MenuItem", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `Order` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  order_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Order_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Order", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `OrderItem` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  orderItem_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: OrderItem_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "OrderItem", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `User` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  user_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: User_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "User", purpose: DELETE_MULTIPLE)
+}
