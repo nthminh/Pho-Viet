@@ -81,6 +81,30 @@ npm run build
 npm start
 ```
 
+## 🌐 Deploy Lên Web (Đưa App Ra Public)
+
+Bạn muốn đưa app lên web để người khác có thể truy cập? Xem hướng dẫn chi tiết tại **[DEPLOYMENT.md](./DEPLOYMENT.md)**
+
+### Deploy Nhanh với Vercel (5 phút) ⚡
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/nthminh/Pho-Viet)
+
+**Các bước:**
+1. Click nút "Deploy with Vercel" ở trên
+2. Login vào Vercel bằng GitHub
+3. Thêm Firebase Environment Variables (xem [DEPLOYMENT.md](./DEPLOYMENT.md#5-cấu-hình-environment-variables))
+4. Click Deploy
+5. Truy cập app qua URL Vercel cung cấp
+
+### Các Phương Án Deploy Khác:
+
+- **Vercel** (Khuyến nghị): Dễ nhất, tốt nhất cho Next.js → [Xem hướng dẫn](./DEPLOYMENT.md#1-deploy-lên-vercel-khuyến-nghị)
+- **Netlify**: Thay thế cho Vercel → [Xem hướng dẫn](./DEPLOYMENT.md#2-deploy-lên-netlify)
+- **Firebase Hosting**: Tất cả ở một nơi → [Xem hướng dẫn](./DEPLOYMENT.md#3-deploy-lên-firebase-hosting)
+- **VPS/Server**: Kiểm soát tối đa → [Xem hướng dẫn](./DEPLOYMENT.md#4-deploy-trên-vpsserver-tự-quản)
+
+📖 **Xem hướng dẫn đầy đủ:** [DEPLOYMENT.md](./DEPLOYMENT.md)
+
 ## 🛠️ Công Nghệ Sử Dụng
 
 - **Framework**: Next.js 14 (React 18)
