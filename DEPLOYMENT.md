@@ -462,6 +462,15 @@ Repository → Settings → Secrets and variables → Actions → New repository
 
 ## 6. Troubleshooting
 
+Gặp vấn đề? Xem **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** để có hướng dẫn chi tiết.
+
+### Lỗi Thường Gặp Nhanh
+
+#### npm install fails
+```bash
+npm install --legacy-peer-deps
+```
+
 ### Lỗi: "Firebase is not defined"
 
 **Nguyên nhân:** Chưa cấu hình Environment Variables

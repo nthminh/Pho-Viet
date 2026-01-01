@@ -9,9 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/qrcode.react": "^1.0.5",
+    "autoprefixer": "^10.4.23",
     "firebase": "^10.11.1",
     "glob": "^10.4.5",
+    "html2canvas": "^1.4.1",
+    "lucide-react": "^0.562.0",
     "next": "^14.2.35",
+    "qrcode.react": "^4.2.0",
     "react": "^18",
     "react-dom": "^18"
   },
