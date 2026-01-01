@@ -2,6 +2,8 @@
 
 App quản lý quán phở hiện đại với đặt món bằng QR code, POS, và màn hình bếp.
 
+> 🚀 **Muốn deploy app lên web?** → Xem [QUICK_START.md](./QUICK_START.md) để deploy trong 5 phút!
+
 ## ✨ Tính Năng
 
 ### 📱 Menu Khách Hàng (Customer Menu)
